@@ -7,7 +7,9 @@ namespace CourseApp.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            //IEnumerable list olarak alınan veri view üzerine aktarılmaktadır.
+            var model = Repository.Applications;
+            return View(model);
         }
 
         public IActionResult Apply()
@@ -19,8 +21,19 @@ namespace CourseApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Apply([FromForm]Candidate model)
         {
-            Repository.Add(model);
-            return View("Feedback",model);
+            // Kayıtlar ile yeni kayıt kontrolü
+            if(Repository.Applications.Any(x => x.Email.Equals(model.Email))) 
+            {
+                ModelState.AddModelError("", "There is already application for you.");
+            }
+            //Eğer model geçerli ise işlem yapılacaktır
+            if (ModelState.IsValid)
+            {
+                Repository.Add(model);
+                return View("Feedback", model);
+            }
+            return View();
+            
         }
     }
 }

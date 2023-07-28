@@ -1,9 +1,16 @@
-﻿namespace CourseApp.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace CourseApp.Models
 {
     public class Candidate
     {
+        [Required(ErrorMessage ="Email is required")]
         public String? Email { get; set; } = String.Empty;
+
+        [Required(ErrorMessage = "FirstName is required")]
         public String? FirstName { get; set; } = String.Empty;
+
+        [Required(ErrorMessage = "LastName is required")]
         public String? LastName { get; set; } = String.Empty;
         public String? FullName => $"{FirstName} {LastName}";
         public int? Age { get; set; }
